@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capybara Fun Facts Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7D6E83;
+            --secondary: #D0B8A8;
+            --background: #F8EDE3;
+            --accent: #DFD3C3;
+            --text: #4A3F35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%237d6e83' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23FFFFFF'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23FFFFFF'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23FFFFFF'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+
+        .subtitle {
+            color: var(--text);
+            font-weight: 300;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 40px;
+            position: relative;
+        }
+
+        .fact-card {
+            background-color: var(--accent);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(125, 110, 131, 0.1);
+        }
+
+        .fact-number {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(125, 110, 131, 0.2);
+        }
+
+        .fact-text {
+            padding: 10px 20px;
+            font-size: 20px;
+            line-height: 1.6;
+            color: var(--text);
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.5s ease;
+        }
+
+        .fact-text.animate {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(125, 110, 131, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 600;
+            min-width: 200px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(125, 110, 131, 0.3);
+            background-color: #6a5e70;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px dashed var(--secondary);
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .footer a {
+            text-decoration: none;
+            font-weight: bold;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary);
+        }
+
+        .dark-mode .footer {
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        .dark-mode .footer a {
+            color: var(--primary);
+        }
+
+        .dark-mode .footer a:hover {
+            color: var(--secondary);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle .fa-moon {
+            color: #4A3F35;
+        }
+
+        .dark-mode .theme-toggle .fa-sun {
+            color: #FFD700;
+        }
+
+        .dark-mode .theme-toggle .fa-moon {
+            color: #e9e2f5;
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+            transform: rotate(30deg);
+        }
+
+        .dark-mode {
+            --primary: #9f8ba3;
+            --secondary: #b499a0;
+            --background: #2a2438;
+            --accent: #4a3f5a;
+            --text: #e9e2f5;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 25px 15px;
+            }
+            
+            .fact-card {
+                padding: 25px 15px;
+                min-height: 160px;
+            }
+            
+            .fact-text {
+                font-size: 18px;
+                padding: 5px;
+            }
+            
+            .btn {
+                min-width: 0;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        .capybara-slideshow {
+            text-align: center;
+            position: relative;
+        }
+
+        .capybara-slideshow h2 {
+            font-size: 24px;
+            color: var(--text);
+        }
+
+        .capybara-slideshow img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+            transition: opacity 1s ease-in-out;
+            opacity: 1;
+        }
+
+        .dark-mode .capybara-slideshow h2 {
+            color: var(--text);
+        }
+
+        @media (max-width: 768px) {
+            .fact-number, 
+            .theme-toggle {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                transform: scale(0.8);
+                transform-origin: top center;
+            }
+        }
+
+        #fact-text, #capybara-image {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <h1>Capybara Fun Facts!</h1>
+            <p class="subtitle"><b>Nature's ultimate chill icon.</b></p>      
+            
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="fact-card">
+                <div id="fact-number" class="fact-number">1</div>
+                <p id="fact-text" class="fact-text"></p>
+            </div>
+            
+            <div class="buttons">
+                <button id="generate-btn" class="btn">
+                    <i class="fas fa-random icon"></i>
+                    New Capybara Fact
+                </button>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div id="facts-viewed" class="stat-value">0</div>
+                    <div class="stat-label">Facts Viewed</div>
+                </div>
+
+                <div class="capybara-slideshow">
+                    <img id="capybara-image" src="images/capybara1.png" alt="Capybara">
+                </div>
+
+                <div class="stat">
+                    <div id="total-facts" class="stat-value"></div>
+                    <div class="stat-label">Total Facts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <span><b>made by <a href="https://www.linkedin.com/in/thejanwijesinghe">lenoshz</a></b></span>
+    </div>
+
+    <script>
+        // Array of capybara fun facts
+        const capybaraFacts = [
+            "Capybaras are the largest rodents in the world, weighing up to 150 pounds (66 kg).",
+            "Capybaras are highly social animals and live in groups of 10-20 individuals.",
+            "Capybaras can stay submerged underwater for up to five minutes to hide from predators.",
+            "Capybaras have partially webbed feet, making them excellent swimmers.",
+            "Baby capybaras can run as fast as adult horses within 24 hours of being born.",
+            "Capybaras are known as 'nature's chairs' because other animals often sit on them.",
+            "The scientific name for capybaras is 'Hydrochoerus hydrochaeris', which means 'water hog'.",
+            "Capybaras can sleep in water with just their noses poking out.",
+            "Capybaras are herbivores and eat 6-8 pounds (3-4 kg) of grass per day.",
+            "Capybaras can purr like cats to show contentment.",
+            "Capybaras have become popular in Japanese hot springs (onsens) where they bathe in hot water.",
+            "Capybaras can run as fast as 35 km/h (22 mph) when threatened.",
+            "Capybaras don't have tails, unlike many other rodents.",
+            "Capybaras can vocalize in various ways - they bark, whistle, click, and squeal.",
+            "Capybaras have 20 teeth and their front teeth never stop growing.",
+            "Capybaras are found in South America, primarily in Brazil, Venezuela, Colombia, and Paraguay.",
+            "Capybaras are crepuscular, meaning they are most active at dawn and dusk.",
+            "Many animals naturally perch on capybaras, including birds, monkeys, and even other capybaras.",
+            "Capybaras are related to guinea pigs and rock cavies.",
+            "Capybaras can live up to 10 years in the wild and 12 years in captivity.",
+            "Capybaras' closest relatives are guinea pigs and rock cavies, not rats or beavers.",
+            "Capybaras have oil glands in their skin that waterproof their fur.",
+            "In some regions, the Catholic Church classifies capybaras as 'fish' so they can be eaten during Lent.",
+            "Capybaras have a gentle temperament and rarely show aggression.",
+            "Capybaras make excellent therapy animals due to their calm and friendly nature."
+        ];
+
+        // Get DOM elements
+        const factText = document.getElementById('fact-text');
+        const factNumber = document.getElementById('fact-number');
+        const generateButton = document.getElementById('generate-btn');
+        const themeToggle = document.getElementById('theme-toggle');
+        const progressBar = document.getElementById('progress-bar');
+        const factsViewed = document.getElementById('facts-viewed');
+        const totalFacts = document.getElementById('total-facts');
+        const capybaraImgElement = document.getElementById("capybara-image");
+
+        // Initialize
+        totalFacts.textContent = capybaraFacts.length;
+
+        let currentFactIndex = 0;
+        let viewedFacts = 0;
+        let usedFactIndices = [];
+
+        // Array of capybara images
+        const capybaraImages = [
+            "images/capybara1.png",
+            "images/capybara2.png",
+            "images/capybara3.png",
+            "images/capybara4.png",
+            "images/capybara5.png"
+        ];
+
+        let currentImageIndex = 0;
+
+        function generateRandomFact() {
+            if (usedFactIndices.length === capybaraFacts.length) {
+                usedFactIndices = [];
+            }
+
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * capybaraFacts.length);
+            } while (usedFactIndices.includes(randomIndex));
+
+            usedFactIndices.push(randomIndex);
+
+            factText.textContent = capybaraFacts[randomIndex];
+            factNumber.textContent = usedFactIndices.length;
+
+            factText.classList.add('animate');
+            setTimeout(() => {
+                factText.classList.remove('animate');
+            }, 500);
+
+            const progress = (usedFactIndices.length / capybaraFacts.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            viewedFacts++;
+            factsViewed.textContent = viewedFacts;
+
+            // Change image in order
+            changeImage();
+        }
+
+        // Function to change image with fade effect
+        function changeImage() {
+            capybaraImgElement.style.opacity = 0; // Start fade out
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex + 1) % capybaraImages.length; // Cycle through images
+                capybaraImgElement.src = capybaraImages[currentImageIndex];
+                capybaraImgElement.style.opacity = 1; // Fade in
+            }, 500); // Match this timeout to CSS transition time
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            themeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Event listeners
+        generateButton.addEventListener('click', generateRandomFact);
+        themeToggle.addEventListener('click', toggleDarkMode);
+
+        // Generate the first fact on page load
+        generateRandomFact();
+    </script>
+</body>
+</html>
