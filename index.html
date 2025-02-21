@@ -485,16 +485,18 @@
 
             usedFactIndices.push(randomIndex);
 
-            factText.textContent = capybaraFacts[randomIndex];
-            factNumber.textContent = usedFactIndices.length;
+            // Start fading out the text
+            factText.style.opacity = 0; 
 
-            factText.classList.add('animate');
+            // Wait for the fade-out to complete before updating the text
             setTimeout(() => {
-                factText.classList.remove('animate');
-            }, 500);
+                factText.textContent = capybaraFacts[randomIndex]; // Update the text
+                factNumber.textContent = usedFactIndices.length; 
+                factText.style.opacity = 1; // Fade the new text back in
+            }, 500); // 500ms for fade-out duration (match with CSS)
 
             const progress = (usedFactIndices.length / capybaraFacts.length) * 100;
-            progressBar.style.width = `${progress}%`;
+            progressBar.style.width = `${progress}%`; // Update progress bar
 
             viewedFacts++;
             factsViewed.textContent = viewedFacts;
