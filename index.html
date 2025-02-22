@@ -471,6 +471,18 @@
             "images/capybara5.png"
         ];
 
+        function preloadImages(imageArray) {
+            imageArray.forEach((src) => {
+                const img = new Image();
+                img.src = src;
+            });
+        }
+
+        // Preload images after the page loads
+        window.addEventListener('load', () => {
+            preloadImages(capybaraImages);
+        });
+
         let currentImageIndex = 0;
 
         function generateRandomFact() {
